@@ -1,5 +1,6 @@
 package com.example.raulstriglio.dagger2poc.module;
 
+import com.example.raulstriglio.dagger2poc.fragments.OtherFragment;
 import com.example.raulstriglio.dagger2poc.fragments.SubFragment;
 
 import dagger.Module;
@@ -15,5 +16,8 @@ public abstract class SubFragmentProvider {
 
     @ContributesAndroidInjector(modules = SubFragmentModule.class)
     abstract SubFragment provideSubFragmentFactory();
+
+    @ContributesAndroidInjector(modules = SubFragmentModule.class)
+    abstract OtherFragment provideOtherFragmentFactory();
 
 }

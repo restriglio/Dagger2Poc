@@ -4,10 +4,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.raulstriglio.dagger2poc.fragments.OtherFragment;
 import com.example.raulstriglio.dagger2poc.fragments.SubFragment;
 import com.example.raulstriglio.dagger2poc.model.NewClass;
+
+import java.sql.Time;
+import java.util.Timer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,12 +35,26 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
+    TextView clickeable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
 
         setContentView(R.layout.activity_main);
+
+        clickeable = (TextView) findViewById(R.id.clickeable);
+
+        clickeable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToFragmentWithStack(
+                        R.id.fragment_container, OtherFragment.newInstance(), "otherFragment"
+                );
+            }
+        });
+
         goToFragmentWithStack(R.id.fragment_container, subFragment, "subFragment");
     }
 

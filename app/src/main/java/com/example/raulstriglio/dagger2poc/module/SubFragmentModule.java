@@ -20,4 +20,10 @@ public class SubFragmentModule {
         return new NewClass("Fragment String");
     }
 
+    @Provides
+    @Named("fomartString3")
+    public NewClass formatString3(){
+        return new NewClass("Other Fragment String");
+    }
+
 }
