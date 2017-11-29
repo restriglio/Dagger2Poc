@@ -1,25 +1,23 @@
 package com.example.raulstriglio.dagger2poc;
 
-import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.example.raulstriglio.dagger2poc.component.DaggerMainActivityComponent;
-import com.example.raulstriglio.dagger2poc.component.DaggerSubFragmentComponent;
-import com.example.raulstriglio.dagger2poc.component.MainActivityComponent;
-import com.example.raulstriglio.dagger2poc.component.SubFragmentComponent;
 import com.example.raulstriglio.dagger2poc.fragments.SubFragment;
 import com.example.raulstriglio.dagger2poc.model.NewClass;
-import com.example.raulstriglio.dagger2poc.module.MainActivityModule;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public class MainActivity extends AppCompatActivity {
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     @Inject
     @Named("fomartString")
@@ -28,21 +26,15 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     SubFragment subFragment;
 
-    private MainActivityComponent mainActivityComponent;
-    private FrameLayout fragmentContainer;
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
 
         setContentView(R.layout.activity_main);
-
-        mainActivityComponent = DaggerMainActivityComponent.builder()
-                .mainActivityModule(new MainActivityModule())
-                .build();
-
-        mainActivityComponent.inject(this);
-        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         goToFragmentWithStack(R.id.fragment_container, subFragment, "subFragment");
     }
 
@@ -61,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public MainActivityComponent getMainActivityComponent(){
-        return mainActivityComponent;
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
-
 }

@@ -17,7 +17,7 @@ public class SubFragmentModule {
     @Provides
     @Named("fomartString2")
     public NewClass formatString2(){
-        return new NewClass("fomartString2");
+        return new NewClass("Fragment String");
     }
 
 }

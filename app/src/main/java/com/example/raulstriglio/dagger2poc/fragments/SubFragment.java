@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.raulstriglio.dagger2poc.MainActivity;
 import com.example.raulstriglio.dagger2poc.R;
-import com.example.raulstriglio.dagger2poc.component.DaggerSubFragmentComponent;
 import com.example.raulstriglio.dagger2poc.model.NewClass;
-import com.example.raulstriglio.dagger2poc.module.SubFragmentModule;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by raul.striglio on 23/11/17.
@@ -39,16 +38,12 @@ public class SubFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidSupportInjection.inject(this);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        DaggerSubFragmentComponent.builder().mainActivityComponent(((MainActivity) getActivity()).getMainActivityComponent())
-                .subFragmentModule(new SubFragmentModule())
-                .build().inject(this);
-
     }
 
     @Nullable
